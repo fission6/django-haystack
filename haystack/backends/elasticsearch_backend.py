@@ -86,6 +86,9 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
             }
         }
     }
+    
+    #default facet size
+    FACET_SIZE=5000
 
     def __init__(self, connection_alias, **connection_options):
         super(ElasticsearchSearchBackend, self).__init__(connection_alias, **connection_options)
@@ -225,7 +228,7 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
 
     @log_query
     def search(self, query_string, sort_by=None, start_offset=0, end_offset=None,
-               fields='', highlight=False, facets=None, date_facets=None, query_facets=None,
+               fields='', highlight=False, facets=None, facet_size=FACET_SIZE, date_facets=None, query_facets=None,
                narrow_queries=None, spelling_query=None, within=None,
                dwithin=None, distance_point=None,
                limit_to_registered_models=None, result_class=None, **kwargs):
@@ -339,6 +342,7 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
                 kwargs['facets'][facet_fieldname] = {
                     'terms': {
                         'field': facet_fieldname,
+                        'size' : facet_size,
                     },
                 }
 
