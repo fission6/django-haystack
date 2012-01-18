@@ -343,7 +343,7 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
                     'terms': {
                         'field': facet_fieldname,
                         'size' : facet_size,
-			'order': reverse_count
+			'order': 'reverse_count'
                     },
                 }
 
